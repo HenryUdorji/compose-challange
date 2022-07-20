@@ -16,16 +16,36 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.ui.theme.background
+import com.example.androiddevchallenge.ui.theme.primaryColor
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,8 +60,151 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp() {
     Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(background)
+        ) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Image(
+                    painter = painterResource(id = R.drawable.bg_art),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(y = (-30).dp),
+
+                    )
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Center)
+                        .offset(y = (-30).dp),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 30.dp)
+            ) {
+                Text(
+                    text = "Sign in",
+                    style = MaterialTheme.typography.body1,
+                    color = primaryColor,
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Spacer(modifier = Modifier.height(50.dp))
+
+                var username by remember { mutableStateOf("") }
+                var password by remember { mutableStateOf("") }
+
+                CustomTextField(
+                    text = username,
+                    imageVector = Icons.Outlined.Person,
+                    placeholder = "Username"
+                ) {
+                    username = it
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                CustomTextField(
+                    text = password,
+                    imageVector = Icons.Outlined.Lock,
+                    placeholder = "Password"
+                ) {
+                    password = it
+                }
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = primaryColor
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(30.dp))
+                        .background(primaryColor)
+                        .fillMaxWidth()
+                        .height(65.dp),
+                    onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Default.Send,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            }
+
+
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Image(
+                    painter = painterResource(id = R.drawable.footer_art),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(y = 40.dp),
+                )
+
+                Text(
+                    text = "I am new here, I need an account",
+                    style = MaterialTheme.typography.body1,
+                    color = primaryColor,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Center)
+                        .offset(y = 30.dp)
+                )
+            }
+        }
     }
+}
+
+@Preview
+@Composable
+fun CustomTextField(
+    text: String,
+    placeholder: String,
+    imageVector: ImageVector,
+    onValueChange: (String) -> Unit,
+) {
+    TextField(
+        value = text,
+        onValueChange = onValueChange,
+        shape = RoundedCornerShape(25.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(width = 1.dp, color = Color.Gray.copy(alpha = 0.4f), shape = RoundedCornerShape(25.dp)).height(60.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            backgroundColor = Color.White,
+            leadingIconColor = primaryColor,
+            textColor = Color.Gray
+        ),
+        leadingIcon = {
+            Icon(imageVector = imageVector, contentDescription = null)
+        },
+        placeholder = {
+            Text(text = placeholder, color = Color.Gray)
+        },
+        singleLine = true,
+        maxLines = 1
+    )
 }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
