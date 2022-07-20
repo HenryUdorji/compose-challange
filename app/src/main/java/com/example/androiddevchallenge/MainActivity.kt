@@ -18,9 +18,7 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -37,13 +35,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.background
-import com.example.androiddevchallenge.ui.theme.primaryColor
+import com.example.androiddevchallenge.ui.theme.mainColor
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +73,7 @@ fun MyApp() {
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset(y = (-30).dp),
-
+                        .offset(y = (-40).dp),
                     )
 
                 Image(
@@ -83,7 +82,7 @@ fun MyApp() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.Center)
-                        .offset(y = (-30).dp),
+                        .offset(y = (-40).dp),
                 )
             }
 
@@ -95,13 +94,12 @@ fun MyApp() {
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(horizontal = 30.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 Text(
                     text = "Sign in",
-                    style = MaterialTheme.typography.body1,
-                    color = primaryColor,
+                    style = MaterialTheme.typography.h1,
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.SemiBold
                 )
 
                 Spacer(modifier = Modifier.height(50.dp))
@@ -122,7 +120,8 @@ fun MyApp() {
                 CustomTextField(
                     text = password,
                     imageVector = Icons.Outlined.Lock,
-                    placeholder = "Password"
+                    placeholder = "Password",
+                    visualTransformation = PasswordVisualTransformation()
                 ) {
                     password = it
                 }
@@ -131,11 +130,11 @@ fun MyApp() {
 
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = primaryColor
+                        backgroundColor = mainColor
                     ),
                     modifier = Modifier
                         .clip(RoundedCornerShape(30.dp))
-                        .background(primaryColor)
+                        .background(mainColor)
                         .fillMaxWidth()
                         .height(65.dp),
                     onClick = { /*TODO*/ }) {
@@ -148,7 +147,6 @@ fun MyApp() {
                 }
             }
 
-
             Box(modifier = Modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.footer_art),
@@ -156,30 +154,30 @@ fun MyApp() {
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset(y = 40.dp),
+                        .offset(y = 60.dp),
                 )
 
                 Text(
                     text = "I am new here, I need an account",
                     style = MaterialTheme.typography.body1,
-                    color = primaryColor,
+                    color = mainColor,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.Center)
-                        .offset(y = 30.dp)
+                        .offset(y = 50.dp)
                 )
             }
         }
     }
 }
 
-@Preview
 @Composable
 fun CustomTextField(
     text: String,
     placeholder: String,
     imageVector: ImageVector,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChange: (String) -> Unit,
 ) {
     TextField(
@@ -188,14 +186,20 @@ fun CustomTextField(
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color.Gray.copy(alpha = 0.4f), shape = RoundedCornerShape(25.dp)).height(60.dp),
+            .border(
+                width = 1.dp,
+                color = Color.Gray.copy(alpha = 0.4f),
+                shape = RoundedCornerShape(25.dp)
+            )
+            .height(60.dp),
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             backgroundColor = Color.White,
-            leadingIconColor = primaryColor,
+            leadingIconColor = mainColor,
             textColor = Color.Gray
         ),
+        visualTransformation = visualTransformation,
         leadingIcon = {
             Icon(imageVector = imageVector, contentDescription = null)
         },
@@ -203,7 +207,8 @@ fun CustomTextField(
             Text(text = placeholder, color = Color.Gray)
         },
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+        textStyle = MaterialTheme.typography.body1
     )
 }
 
