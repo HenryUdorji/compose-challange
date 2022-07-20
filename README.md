@@ -12,7 +12,6 @@ Jetpack compose makes building UI really simple and I just want to get familiar 
 
 
 ## :camera_flash: Screenshots
-<!-- You can add more screenshots here if you like -->
 <img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
 
 ## License
